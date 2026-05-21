@@ -1,0 +1,37 @@
+name: Foundry CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Install dependencies
+        run: forge install
+
+      - name: Run tests
+        run: forge test -vvv
+
+      - name: Check coverage >= 90%
+        run: |
+          forge coverage --report summary > coverage.txt
+          cat coverage.txt
+
+          COVERAGE=$(grep "Total" coverage.txt | awk '{print $4}' | sed 's/%//')
+
+          echo "Total coverage: $COVERAGE%"
+
+          awk "BEGIN {exit !($COVERAGE >= 90)}"

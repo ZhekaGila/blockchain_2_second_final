@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+out/
+cache/
+
+# env
+.env
+.env.*
+
+# foundry
+broadcast/
+cache/
+out/
+
+# vscode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+
+# frontend build
+frontend/dist/
+
+# anvil temp
+anvil/

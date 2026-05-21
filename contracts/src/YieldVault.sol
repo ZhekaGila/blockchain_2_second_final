@@ -7,10 +7,7 @@ import {IERC20} from "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 contract YieldVault is ERC4626, Ownable {
-    constructor(
-        IERC20 asset_,
-        address initialOwner
-    )
+    constructor(IERC20 asset_, address initialOwner)
         ERC20("GameFi Yield Vault Share", "GYVS")
         ERC4626(asset_)
         Ownable(initialOwner)

@@ -128,7 +128,7 @@ contract CraftingTest is Test {
     function testCraftingContractAddressIsSet() public {
         assertEq(items.craftingContract(), address(crafting));
     }
-    
+
     function testOwnerCanMintResources() public {
         items.mint(user, items.WOOD(), 5);
 

@@ -40,10 +40,7 @@ contract FuzzTests is Test {
     // AMM FUZZ TESTS
     // -------------------------------------------------
 
-    function testFuzzAddLiquidity(
-        uint256 amount0,
-        uint256 amount1
-    ) public {
+    function testFuzzAddLiquidity(uint256 amount0, uint256 amount1) public {
         amount0 = bound(amount0, 1 ether, 1000 ether);
         amount1 = bound(amount1, 1 ether, 1000 ether);
 
@@ -57,10 +54,7 @@ contract FuzzTests is Test {
         assertEq(amm.reserve1(), amount1);
     }
 
-    function testFuzzSwapGameToGold(
-        uint256 liquidity,
-        uint256 swapAmount
-    ) public {
+    function testFuzzSwapGameToGold(uint256 liquidity, uint256 swapAmount) public {
         liquidity = bound(liquidity, 100 ether, 1000 ether);
         swapAmount = bound(swapAmount, 1 ether, liquidity / 10);
 
@@ -79,10 +73,7 @@ contract FuzzTests is Test {
         assertGt(afterBalance, beforeBalance);
     }
 
-    function testFuzzSwapGoldToGame(
-        uint256 liquidity,
-        uint256 swapAmount
-    ) public {
+    function testFuzzSwapGoldToGame(uint256 liquidity, uint256 swapAmount) public {
         liquidity = bound(liquidity, 100 ether, 1000 ether);
         swapAmount = bound(swapAmount, 1 ether, liquidity / 10);
 
@@ -101,10 +92,7 @@ contract FuzzTests is Test {
         assertGt(afterBalance, beforeBalance);
     }
 
-    function testFuzzGetAmountOut(
-        uint256 liquidity,
-        uint256 amountIn
-    ) public {
+    function testFuzzGetAmountOut(uint256 liquidity, uint256 amountIn) public {
         liquidity = bound(liquidity, 100 ether, 1000 ether);
         amountIn = bound(amountIn, 1 ether, 100 ether);
 
@@ -112,19 +100,14 @@ contract FuzzTests is Test {
 
         amm.addLiquidity(liquidity, liquidity);
 
-        uint256 output = amm.getAmountOut(
-            address(game),
-            amountIn
-        );
+        uint256 output = amm.getAmountOut(address(game), amountIn);
 
         vm.stopPrank();
 
         assertGt(output, 0);
     }
 
-    function testFuzzRemoveLiquidity(
-        uint256 liquidity
-    ) public {
+    function testFuzzRemoveLiquidity(uint256 liquidity) public {
         liquidity = bound(liquidity, 100 ether, 1000 ether);
 
         vm.startPrank(user);
@@ -145,9 +128,7 @@ contract FuzzTests is Test {
     // VAULT FUZZ TESTS
     // -------------------------------------------------
 
-    function testFuzzVaultDeposit(
-        uint256 amount
-    ) public {
+    function testFuzzVaultDeposit(uint256 amount) public {
         amount = bound(amount, 1 ether, 1000 ether);
 
         vm.startPrank(user);
@@ -159,9 +140,7 @@ contract FuzzTests is Test {
         assertEq(vault.balanceOf(user), amount);
     }
 
-    function testFuzzVaultWithdraw(
-        uint256 amount
-    ) public {
+    function testFuzzVaultWithdraw(uint256 amount) public {
         amount = bound(amount, 1 ether, 1000 ether);
 
         vm.startPrank(user);
@@ -171,17 +150,11 @@ contract FuzzTests is Test {
         vault.withdraw(amount / 2, user, user);
 
         vm.stopPrank();
-        
-        assertApproxEqAbs(
-            vault.balanceOf(user),
-            amount / 2,
-            1
-        );
+
+        assertApproxEqAbs(vault.balanceOf(user), amount / 2, 1);
     }
 
-    function testFuzzVaultRedeem(
-        uint256 amount
-    ) public {
+    function testFuzzVaultRedeem(uint256 amount) public {
         amount = bound(amount, 1 ether, 1000 ether);
 
         vm.startPrank(user);
@@ -195,9 +168,7 @@ contract FuzzTests is Test {
         assertEq(vault.balanceOf(user), 0);
     }
 
-    function testFuzzVaultPreviewDeposit(
-        uint256 amount
-    ) public {
+    function testFuzzVaultPreviewDeposit(uint256 amount) public {
         amount = bound(amount, 1 ether, 1000 ether);
 
         uint256 shares = vault.previewDeposit(amount);
@@ -209,9 +180,7 @@ contract FuzzTests is Test {
     // GOVERNANCE TOKEN FUZZ TEST
     // -------------------------------------------------
 
-    function testFuzzDelegateVotes(
-        uint256 amount
-    ) public {
+    function testFuzzDelegateVotes(uint256 amount) public {
         amount = bound(amount, 1 ether, 1000 ether);
 
         game.mint(user, amount);

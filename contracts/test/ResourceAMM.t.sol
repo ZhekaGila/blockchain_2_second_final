@@ -145,10 +145,7 @@ contract ResourceAMMTest is Test {
     function testSwapChargesFee() public {
         addInitialLiquidity();
 
-        uint256 output = amm.getAmountOut(
-            address(game),
-            10 ether
-        );
+        uint256 output = amm.getAmountOut(address(game), 10 ether);
 
         assertLt(output, 10 ether);
     }
@@ -156,10 +153,7 @@ contract ResourceAMMTest is Test {
     function testGetAmountOut() public {
         addInitialLiquidity();
 
-        uint256 output = amm.getAmountOut(
-            address(game),
-            10 ether
-        );
+        uint256 output = amm.getAmountOut(address(game), 10 ether);
 
         assertGt(output, 0);
     }

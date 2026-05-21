@@ -16,15 +16,9 @@ contract UpgradeableCraftingTest is Test {
     function setUp() public {
         UpgradeableCrafting impl = new UpgradeableCrafting();
 
-        bytes memory initData = abi.encodeWithSelector(
-            UpgradeableCrafting.initialize.selector,
-            owner
-        );
+        bytes memory initData = abi.encodeWithSelector(UpgradeableCrafting.initialize.selector, owner);
 
-        ERC1967Proxy proxy = new ERC1967Proxy(
-            address(impl),
-            initData
-        );
+        ERC1967Proxy proxy = new ERC1967Proxy(address(impl), initData);
 
         proxyAsV1 = UpgradeableCrafting(address(proxy));
     }
@@ -63,8 +57,7 @@ contract UpgradeableCraftingTest is Test {
 
         proxyAsV1.upgradeToAndCall(address(implV2), "");
 
-        UpgradeableCraftingV2 proxyAsV2 =
-            UpgradeableCraftingV2(address(proxyAsV1));
+        UpgradeableCraftingV2 proxyAsV2 = UpgradeableCraftingV2(address(proxyAsV1));
 
         assertEq(proxyAsV2.woodCost(), 7);
         assertEq(proxyAsV2.stoneCost(), 8);
@@ -76,8 +69,7 @@ contract UpgradeableCraftingTest is Test {
 
         proxyAsV1.upgradeToAndCall(address(implV2), "");
 
-        UpgradeableCraftingV2 proxyAsV2 =
-            UpgradeableCraftingV2(address(proxyAsV1));
+        UpgradeableCraftingV2 proxyAsV2 = UpgradeableCraftingV2(address(proxyAsV1));
 
         assertEq(proxyAsV2.version(), "V2");
     }
@@ -87,8 +79,7 @@ contract UpgradeableCraftingTest is Test {
 
         proxyAsV1.upgradeToAndCall(address(implV2), "");
 
-        UpgradeableCraftingV2 proxyAsV2 =
-            UpgradeableCraftingV2(address(proxyAsV1));
+        UpgradeableCraftingV2 proxyAsV2 = UpgradeableCraftingV2(address(proxyAsV1));
 
         proxyAsV2.setGoldCost(10);
 

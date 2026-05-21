@@ -46,26 +46,15 @@ contract Deploy is Script {
         items.setCraftingContract(address(crafting));
         UpgradeableCrafting craftingImpl = new UpgradeableCrafting();
 
-        bytes memory initData = abi.encodeWithSelector(
-            UpgradeableCrafting.initialize.selector,
-            deployer
-        );
+        bytes memory initData = abi.encodeWithSelector(UpgradeableCrafting.initialize.selector, deployer);
 
-        ERC1967Proxy craftingProxy = new ERC1967Proxy(
-            address(craftingImpl),
-            initData
-        );
+        ERC1967Proxy craftingProxy = new ERC1967Proxy(address(craftingImpl), initData);
 
-        UpgradeableCrafting upgradeableCrafting = UpgradeableCrafting(
-            address(craftingProxy)
-        );
+        UpgradeableCrafting upgradeableCrafting = UpgradeableCrafting(address(craftingProxy));
 
         GameFactory factory = new GameFactory();
 
-        ResourceAMM amm = new ResourceAMM(
-            address(gameToken),
-            address(goldToken)
-        );
+        ResourceAMM amm = new ResourceAMM(address(gameToken), address(goldToken));
 
         for (uint256 i = 0; i < testUsers.length; i++) {
             gameToken.mint(testUsers[i], 1000 ether);
@@ -75,12 +64,7 @@ contract Deploy is Script {
         address[] memory proposers = new address[](0);
         address[] memory executors = new address[](0);
 
-        TimelockController timelock = new TimelockController(
-            2 minutes,
-            proposers,
-            executors,
-            deployer
-        );
+        TimelockController timelock = new TimelockController(2 minutes, proposers, executors, deployer);
 
         GameGovernor governor = new GameGovernor(gameToken, timelock);
 
@@ -96,11 +80,7 @@ contract Deploy is Script {
 
         YulMath yulMath = new YulMath();
 
-        ItemShop itemShop = new ItemShop(
-            deployer,
-            address(goldToken),
-            address(items)
-        );
+        ItemShop itemShop = new ItemShop(deployer, address(goldToken), address(items));
 
         items.setItemShop(address(itemShop));
 

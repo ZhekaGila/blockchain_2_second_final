@@ -56,7 +56,6 @@ library Create3 {
      * 0x1A   | 600B        | PUSH1 0x0B       | 0x0B 0x15       | [0x0B..0x20): bytecode
      * 0x1C   | f3          | RETURN           |                 | [0x0B..0x20): bytecode
      */
-
     /// @dev The proxy initialization code.
     bytes29 private constant PROXY_INITCODE = 0x74365F5F37365F34f03D5F5F3E5F3D91601357FD5bf35F526015600Bf3;
 

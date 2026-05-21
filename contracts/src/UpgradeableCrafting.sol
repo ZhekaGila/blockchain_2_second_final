@@ -20,11 +20,7 @@ contract UpgradeableCrafting is Initializable, UUPSUpgradeable, OwnableUpgradeab
         ironCost = 1;
     }
 
-    function setRecipe(
-        uint256 newWoodCost,
-        uint256 newStoneCost,
-        uint256 newIronCost
-    ) external onlyOwner {
+    function setRecipe(uint256 newWoodCost, uint256 newStoneCost, uint256 newIronCost) external onlyOwner {
         woodCost = newWoodCost;
         stoneCost = newStoneCost;
         ironCost = newIronCost;
@@ -36,9 +32,5 @@ contract UpgradeableCrafting is Initializable, UUPSUpgradeable, OwnableUpgradeab
         return "V1";
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyOwner
-    {}
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 }

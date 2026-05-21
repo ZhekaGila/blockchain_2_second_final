@@ -16,10 +16,7 @@ contract PriceOracleTest is Test {
             8
         );
 
-        oracle = new PriceOracle(
-            address(mock),
-            1 hours
-        );
+        oracle = new PriceOracle(address(mock), 1 hours);
     }
 
     function testGetPrice() public {
@@ -32,7 +29,7 @@ contract PriceOracleTest is Test {
     function testUpdatePrice() public {
         mock.setAnswer(3000e8);
 
-        (uint256 price, ) = oracle.getPrice();
+        (uint256 price,) = oracle.getPrice();
 
         assertEq(price, 3000e8);
     }
@@ -67,7 +64,7 @@ contract PriceOracleTest is Test {
     function testFreshPriceDoesNotRevert() public {
         vm.warp(block.timestamp + 30 minutes);
 
-        (uint256 price, ) = oracle.getPrice();
+        (uint256 price,) = oracle.getPrice();
 
         assertEq(price, 2000e8);
     }
@@ -79,7 +76,7 @@ contract PriceOracleTest is Test {
 
         vm.warp(block.timestamp + 30 minutes);
 
-        (uint256 price, ) = oracle.getPrice();
+        (uint256 price,) = oracle.getPrice();
 
         assertEq(price, 2500e8);
     }
@@ -87,11 +84,11 @@ contract PriceOracleTest is Test {
     function testMultiplePriceUpdates() public {
         mock.setAnswer(2100e8);
 
-        (uint256 price1, ) = oracle.getPrice();
+        (uint256 price1,) = oracle.getPrice();
 
         mock.setAnswer(2200e8);
 
-        (uint256 price2, ) = oracle.getPrice();
+        (uint256 price2,) = oracle.getPrice();
 
         assertEq(price1, 2100e8);
         assertEq(price2, 2200e8);
@@ -100,7 +97,7 @@ contract PriceOracleTest is Test {
     function testStaleBoundary() public {
         vm.warp(block.timestamp + 1 hours);
 
-        (uint256 price, ) = oracle.getPrice();
+        (uint256 price,) = oracle.getPrice();
 
         assertEq(price, 2000e8);
     }

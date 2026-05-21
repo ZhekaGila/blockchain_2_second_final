@@ -16,11 +16,7 @@ contract ItemShop is Ownable {
     uint256 public stonePrice = 2 ether;
     uint256 public ironPrice = 3 ether;
 
-    constructor(
-        address initialOwner,
-        address goldTokenAddress,
-        address itemsAddress
-    ) Ownable(initialOwner) {
+    constructor(address initialOwner, address goldTokenAddress, address itemsAddress) Ownable(initialOwner) {
         goldToken = IERC20(goldTokenAddress);
         items = GameItems(itemsAddress);
     }

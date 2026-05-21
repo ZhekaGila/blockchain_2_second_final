@@ -26,12 +26,7 @@ contract GovernanceTest is Test {
         address[] memory proposers = new address[](0);
         address[] memory executors = new address[](0);
 
-        timelock = new TimelockController(
-            2 minutes,
-            proposers,
-            executors,
-            address(this)
-        );
+        timelock = new TimelockController(2 minutes, proposers, executors, address(this));
 
         governor = new GameGovernor(token, timelock);
 
@@ -67,22 +62,12 @@ contract GovernanceTest is Test {
 
         targets[0] = address(crafting);
         values[0] = 0;
-        calldatas[0] = abi.encodeWithSelector(
-            crafting.setSwordRecipe.selector,
-            1,
-            1,
-            1
-        );
+        calldatas[0] = abi.encodeWithSelector(crafting.setSwordRecipe.selector, 1, 1, 1);
 
         description = "Change sword recipe to 1-1-1";
 
         vm.prank(voter);
-        proposalId = governor.propose(
-            targets,
-            values,
-            calldatas,
-            description
-        );
+        proposalId = governor.propose(targets, values, calldatas, description);
     }
 
     function testVotingPowerAfterDelegate() public view {
@@ -90,13 +75,13 @@ contract GovernanceTest is Test {
     }
 
     function testCreateProposal() public {
-        (uint256 proposalId, , , , ) = createRecipeProposal();
+        (uint256 proposalId,,,,) = createRecipeProposal();
 
         assertEq(uint8(governor.state(proposalId)), uint8(IGovernor.ProposalState.Pending));
     }
 
     function testProposalBecomesActive() public {
-        (uint256 proposalId, , , , ) = createRecipeProposal();
+        (uint256 proposalId,,,,) = createRecipeProposal();
 
         vm.roll(block.number + governor.votingDelay() + 1);
 
@@ -104,18 +89,14 @@ contract GovernanceTest is Test {
     }
 
     function testVoteForProposal() public {
-        (uint256 proposalId, , , , ) = createRecipeProposal();
+        (uint256 proposalId,,,,) = createRecipeProposal();
 
         vm.roll(block.number + governor.votingDelay() + 1);
 
         vm.prank(voter);
         governor.castVote(proposalId, 1);
 
-        (
-            uint256 againstVotes,
-            uint256 forVotes,
-            uint256 abstainVotes
-        ) = governor.proposalVotes(proposalId);
+        (uint256 againstVotes, uint256 forVotes, uint256 abstainVotes) = governor.proposalVotes(proposalId);
 
         assertEq(againstVotes, 0);
         assertGt(forVotes, 0);
@@ -123,7 +104,7 @@ contract GovernanceTest is Test {
     }
 
     function testProposalSucceededAfterVotingPeriod() public {
-        (uint256 proposalId, , , , ) = createRecipeProposal();
+        (uint256 proposalId,,,,) = createRecipeProposal();
 
         vm.roll(block.number + governor.votingDelay() + 1);
 
@@ -151,12 +132,7 @@ contract GovernanceTest is Test {
 
         vm.roll(block.number + governor.votingPeriod() + 1);
 
-        governor.queue(
-            targets,
-            values,
-            calldatas,
-            keccak256(bytes(description))
-        );
+        governor.queue(targets, values, calldatas, keccak256(bytes(description)));
 
         assertEq(uint8(governor.state(proposalId)), uint8(IGovernor.ProposalState.Queued));
     }
@@ -177,21 +153,11 @@ contract GovernanceTest is Test {
 
         vm.roll(block.number + governor.votingPeriod() + 1);
 
-        governor.queue(
-            targets,
-            values,
-            calldatas,
-            keccak256(bytes(description))
-        );
+        governor.queue(targets, values, calldatas, keccak256(bytes(description)));
 
         vm.warp(block.timestamp + 3 minutes);
 
-        governor.execute(
-            targets,
-            values,
-            calldatas,
-            keccak256(bytes(description))
-        );
+        governor.execute(targets, values, calldatas, keccak256(bytes(description)));
 
         assertEq(crafting.woodCost(), 1);
         assertEq(crafting.stoneCost(), 1);

@@ -17,18 +17,11 @@ contract Handler is Test {
 
     address public user = address(1);
 
-    constructor(
-        GameToken _game,
-        GoldToken _gold,
-        ResourceAMM _amm,
-        YieldVault _vault
-    ) {
+    constructor(GameToken _game, GoldToken _gold, ResourceAMM _amm, YieldVault _vault) {
         game = _game;
         gold = _gold;
         amm = _amm;
         vault = _vault;
-
-
 
         vm.startPrank(user);
 
@@ -107,18 +100,11 @@ contract InvariantTests is StdInvariant, Test {
         game.mint(address(1), 1_000_000 ether);
         gold.mint(address(1), 1_000_000 ether);
 
-        handler = new Handler(
-            game,
-            gold,
-            amm,
-            vault
-        );
+        handler = new Handler(game, gold, amm, vault);
 
         targetContract(address(handler));
 
-        initialK =
-            amm.reserve0() *
-            amm.reserve1();
+        initialK = amm.reserve0() * amm.reserve1();
     }
 
     // -------------------------------------------------
@@ -126,9 +112,7 @@ contract InvariantTests is StdInvariant, Test {
     // -------------------------------------------------
 
     function invariant_KNeverDecreases() public view {
-        uint256 currentK =
-            amm.reserve0() *
-            amm.reserve1();
+        uint256 currentK = amm.reserve0() * amm.reserve1();
 
         assertGe(currentK, initialK);
     }

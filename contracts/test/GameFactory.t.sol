@@ -39,17 +39,9 @@ contract GameFactoryTest is Test {
     function testPredictCreate2Address() public {
         bytes32 salt = keccak256("POOL_1");
 
-        address predicted = factory.predictAMMAddress(
-            address(game),
-            address(gold),
-            salt
-        );
+        address predicted = factory.predictAMMAddress(address(game), address(gold), salt);
 
-        address actual = factory.createAMMCreate2(
-            address(game),
-            address(gold),
-            salt
-        );
+        address actual = factory.createAMMCreate2(address(game), address(gold), salt);
 
         assertEq(predicted, actual);
     }
@@ -57,11 +49,7 @@ contract GameFactoryTest is Test {
     function testCreate2AMMHasCorrectTokens() public {
         bytes32 salt = keccak256("POOL_2");
 
-        address ammAddress = factory.createAMMCreate2(
-            address(game),
-            address(gold),
-            salt
-        );
+        address ammAddress = factory.createAMMCreate2(address(game), address(gold), salt);
 
         ResourceAMM amm = ResourceAMM(ammAddress);
 
@@ -73,17 +61,9 @@ contract GameFactoryTest is Test {
         bytes32 salt1 = keccak256("POOL_3");
         bytes32 salt2 = keccak256("POOL_4");
 
-        address pool1 = factory.createAMMCreate2(
-            address(game),
-            address(gold),
-            salt1
-        );
+        address pool1 = factory.createAMMCreate2(address(game), address(gold), salt1);
 
-        address pool2 = factory.createAMMCreate2(
-            address(game),
-            address(gold),
-            salt2
-        );
+        address pool2 = factory.createAMMCreate2(address(game), address(gold), salt2);
 
         assertTrue(pool1 != pool2);
     }
@@ -91,18 +71,10 @@ contract GameFactoryTest is Test {
     function testCreate2SameSaltReverts() public {
         bytes32 salt = keccak256("POOL_5");
 
-        factory.createAMMCreate2(
-            address(game),
-            address(gold),
-            salt
-        );
+        factory.createAMMCreate2(address(game), address(gold), salt);
 
         vm.expectRevert();
 
-        factory.createAMMCreate2(
-            address(game),
-            address(gold),
-            salt
-        );
+        factory.createAMMCreate2(address(game), address(gold), salt);
     }
 }

@@ -5,13 +5,7 @@ interface AggregatorV3Interface {
     function latestRoundData()
         external
         view
-        returns (
-            uint80 roundId,
-            int256 answer,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        );
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
 
     function decimals() external view returns (uint8);
 }
@@ -29,13 +23,7 @@ contract PriceOracle {
     }
 
     function getPrice() external view returns (uint256 price, uint8 decimals) {
-        (
-            ,
-            int256 answer,
-            ,
-            uint256 updatedAt,
-
-        ) = feed.latestRoundData();
+        (, int256 answer,, uint256 updatedAt,) = feed.latestRoundData();
 
         if (answer <= 0) revert InvalidPrice();
 

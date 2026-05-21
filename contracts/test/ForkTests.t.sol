@@ -11,16 +11,7 @@ interface IERC20Like {
 }
 
 interface IChainlinkFeed {
-    function latestRoundData()
-        external
-        view
-        returns (
-            uint80,
-            int256,
-            uint256,
-            uint256,
-            uint80
-        );
+    function latestRoundData() external view returns (uint80, int256, uint256, uint256, uint80);
 
     function decimals() external view returns (uint8);
 }
@@ -28,14 +19,11 @@ interface IChainlinkFeed {
 contract ForkTests is Test {
     uint256 arbitrumFork;
 
-    address constant USDC_ARBITRUM =
-        0xaf88d065e77c8cC2239327C5EDb3A432268e5831;
+    address constant USDC_ARBITRUM = 0xaf88d065e77c8cC2239327C5EDb3A432268e5831;
 
-    address constant WETH_ARBITRUM =
-        0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
+    address constant WETH_ARBITRUM = 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
 
-    address constant ETH_USD_FEED_ARBITRUM =
-        0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612;
+    address constant ETH_USD_FEED_ARBITRUM = 0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612;
 
     function setUp() public {
         string memory rpcUrl = vm.envString("ARBITRUM_RPC_URL");
@@ -60,7 +48,7 @@ contract ForkTests is Test {
     function testForkReadChainlinkETHPrice() public view {
         IChainlinkFeed feed = IChainlinkFeed(ETH_USD_FEED_ARBITRUM);
 
-        (, int256 answer, , uint256 updatedAt, ) = feed.latestRoundData();
+        (, int256 answer,, uint256 updatedAt,) = feed.latestRoundData();
 
         assertGt(answer, 0);
         assertGt(updatedAt, 0);

@@ -13,9 +13,7 @@ contract Crafting is Ownable {
 
     event SwordCrafted(address indexed player);
 
-    constructor(address initialOwner, address itemsAddress)
-        Ownable(initialOwner)
-    {
+    constructor(address initialOwner, address itemsAddress) Ownable(initialOwner) {
         items = GameItems(itemsAddress);
     }
 
@@ -29,21 +27,13 @@ contract Crafting is Ownable {
         emit SwordCrafted(msg.sender);
     }
 
-    function setSwordRecipe(
-        uint256 newWoodCost,
-        uint256 newStoneCost,
-        uint256 newIronCost
-    ) external onlyOwner {
+    function setSwordRecipe(uint256 newWoodCost, uint256 newStoneCost, uint256 newIronCost) external onlyOwner {
         woodCost = newWoodCost;
         stoneCost = newStoneCost;
         ironCost = newIronCost;
     }
 
-    function getRecipe()
-    external
-    view
-    returns (uint256, uint256, uint256)
-    {
+    function getRecipe() external view returns (uint256, uint256, uint256) {
         return (woodCost, stoneCost, ironCost);
     }
 }
